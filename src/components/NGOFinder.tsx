@@ -98,14 +98,14 @@ const NGOFinder = () => {
         {/* NGO Grid */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {ngos.map((ngo, index) => (
-            <Card key={ngo.id} className={`group hover:shadow-warm transition-all duration-300 border-0 shadow-soft animate-scale-in`} style={{animationDelay: `${index * 100}ms`}}>
+            <Card key={ngo.id} className={`group hover:shadow-warm transition-all duration-300 bg-gray-300 border-0 shadow-soft animate-scale-in`} style={{animationDelay: `${index * 100}ms`}}>
               <CardHeader>
                 <div className="flex items-start justify-between">
                   <div>
                     <CardTitle className="text-lg flex items-center space-x-2">
                       <span>{ngo.name}</span>
                       {ngo.verified && (
-                        <Badge variant="secondary" className="text-xs">
+                        <Badge variant="secondary" className="bg-yellow-100 text-xs">
                           ✓ Verified
                         </Badge>
                       )}
@@ -126,7 +126,7 @@ const NGOFinder = () => {
                       <span className="text-sm text-muted-foreground">{ngo.rating}</span>
                     </div>
                   </div>
-                  <Badge variant="outline" className="text-primary">
+                  <Badge variant="outline" className="bg-yellow-100 text-primary">
                     {ngo.distance}
                   </Badge>
                 </div>
@@ -181,7 +181,7 @@ const NGOFinder = () => {
             <strong>Coming Soon:</strong> Interactive map view and real-time NGO availability
           </p>
           <p className="text-sm text-muted-foreground">
-            Connect to Supabase to enable live NGO data, real-time notifications, and advanced filtering
+            Connect with us to enable live NGO data, real-time notifications, and advanced filtering
           </p>
         </div>
       </div>

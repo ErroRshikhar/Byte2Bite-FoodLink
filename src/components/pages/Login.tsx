@@ -1,53 +1,54 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Eye, EyeOff, LogIn, Utensils, Heart } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui/card';
-// Update the path below if your hooks folder is elsewhere
-import { useCallback } from 'react';
+import { loginUser } from '@/firebaseAuth'; // Firebase auth functions
 
+// Simple toast using alert
 export function useToast() {
-  const toast = useCallback(({ title, description }: { title: string; description?: string }) => {
-    window.alert(`${title}${description ? '\n' + description : ''}`);
-  }, []);
-  return { toast };
+  return {
+    toast: ({ title, description }: { title: string; description?: string }) => {
+      window.alert(`${title}${description ? '\n' + description : ''}`);
+    },
+  };
 }
+
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
-  const [formData, setFormData] = useState({
-    email: '',
-    password: '',
-  });
+  const [formData, setFormData] = useState({ email: '', password: '' });
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
+  const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
-    
-    // TODO: Implement Supabase authentication
-    setTimeout(() => {
-      toast({
-        title: "Login functionality",
-        description: "Login will be implemented with Supabase authentication",
-      });
-      setIsLoading(false);
-    }, 1000);
+
+    const { user, error } = await loginUser({
+      email: formData.email,
+      password: formData.password,
+    });
+
+    if (user) {
+      toast({ title: "Login Successful", description: `Welcome back ${user.email}` });
+      navigate('/dashboard'); // redirect after login
+    } else if (error) {
+      toast({ title: "Login Failed", description: error });
+    }
+
+    setIsLoading(false);
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData(prev => ({
-      ...prev,
-      [e.target.name]: e.target.value
-    }));
+    setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-primary/5 via-background to-secondary/5 flex items-center justify-center px-4">
       <div className="w-full max-w-md">
-        {/* Logo */}
         <div className="flex items-center justify-center space-x-2 mb-8">
           <div className="relative">
             <Utensils className="h-10 w-10 text-primary" />
@@ -100,20 +101,12 @@ const Login = () => {
                     className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
                     onClick={() => setShowPassword(!showPassword)}
                   >
-                    {showPassword ? (
-                      <EyeOff className="h-4 w-4" />
-                    ) : (
-                      <Eye className="h-4 w-4" />
-                    )}
+                    {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                   </Button>
                 </div>
               </div>
 
-              <Button 
-                type="submit" 
-                className="w-full" 
-                disabled={isLoading}
-              >
+              <Button type="submit" className="w-full" disabled={isLoading}>
                 {isLoading ? "Signing in..." : "Sign In"}
               </Button>
             </form>
@@ -121,20 +114,14 @@ const Login = () => {
             <div className="mt-6 text-center">
               <p className="text-sm text-muted-foreground">
                 Don't have an account?{' '}
-                <Link 
-                  to="/register" 
-                  className="font-medium text-primary hover:text-primary/80 transition-colors"
-                >
+                <Link to="/register" className="font-medium text-primary hover:text-primary/80">
                   Sign up
                 </Link>
               </p>
             </div>
 
             <div className="mt-4 text-center">
-              <Link 
-                to="/" 
-                className="text-sm text-muted-foreground hover:text-primary transition-colors"
-              >
+              <Link to="/" className="text-sm text-muted-foreground hover:text-primary">
                 ← Back to Home
               </Link>
             </div>

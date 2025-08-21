@@ -37,7 +37,7 @@ const PostFood = () => {
           </p>
         </div>
 
-        <Card className="shadow-warm border-0 bg-card/80 backdrop-blur-sm">
+        <Card className="shadow-warm border-0 bg-gray-300 backdrop-blur-sm">
           <CardHeader>
             <CardTitle className="flex items-center space-x-2">
               <div className="w-8 h-8 bg-gradient-hero rounded-full flex items-center justify-center">
@@ -145,20 +145,13 @@ const PostFood = () => {
                 />
               </div>
 
-              <Button type="submit" variant="hero" size="lg" className="w-full">
+              <Button type="submit" variant="hero" size="lg" className="bg-yellow-100 w-half">
                 <Send className="mr-2 h-5 w-5" />
                 Post Food for Sharing
               </Button>
             </form>
           </CardContent>
         </Card>
-
-        <div className="mt-8 p-4 bg-muted/50 rounded-lg border border-border">
-          <p className="text-sm text-muted-foreground text-center">
-            <strong>Note:</strong> To enable real-time posting and NGO matching, connect this app to Supabase 
-            for secure authentication and database functionality.
-          </p>
-        </div>
       </div>
     </section>
   );

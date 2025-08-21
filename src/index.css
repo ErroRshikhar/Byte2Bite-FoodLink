@@ -10,10 +10,10 @@
 @layer base {
   :root {
     /* Base colors - warm, food-inspired palette */
-    --background: 45 20% 98%;
+    --background: 75 20% 98%;
     --foreground: 20 20% 15%;
 
-    --card: 45 20% 98%;
+    --card: 75 20% 98%;
     --card-foreground: 20 20% 15%;
 
     --popover: 45 20% 98%;
@@ -77,7 +77,8 @@
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
 
-  .light-blue {
+  .light-blue 
+  {
   --background: 210 60% 95%;         /* very light blue background */
   --foreground: 210 20% 20%;         /* dark blue text */
 
@@ -121,7 +122,7 @@
   }
 
   body {
-    background-color: hsl(var(--background));
-    color: hsl(var(--foreground));
+    background-color: rgb(205, 226, 244);
+    color: hsl(0, 87%, 49%);
   }
 }
