@@ -96,7 +96,7 @@ const AIFoodChecker = () => {
       {/* Floating AI Food Checker Button */}
       <Button
         onClick={() => setIsOpen(true)}
-        className={`fixed bottom-24 right-6 rounded-full shadow-lg transition-all duration-300 z-40 ${
+        className={`bg-white fixed bottom-24 right-6 rounded-full shadow-lg transition-all duration-300 z-40 ${
           isOpen ? 'scale-0' : 'scale-100 hover:scale-110'
         }`}
         size="lg"
@@ -108,19 +108,19 @@ const AIFoodChecker = () => {
 
       {/* AI Food Checker Modal */}
       <div
-        className={`fixed inset-0 bg-black/50 flex items-center justify-center p-4 transition-all duration-300 z-50 ${
+        className={`fixed inset-0 flex items-center justify-center p-4 transition-all duration-300 z-50 ${
           isOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'
         }`}
         onClick={() => setIsOpen(false)}
       >
         <Card 
-          className={`w-full max-w-md transition-all duration-300 ${
+          className={`bg-white shadow-xl w-full max-w-md transition-all duration-300 ${
             isOpen ? 'scale-100' : 'scale-90'
           }`}
           onClick={(e) => e.stopPropagation()}
         >
           <CardHeader>
-            <div className="flex items-center justify-between">
+            <div className="bg-white flex items-center justify-between">
               <CardTitle className="flex items-center gap-2">
                 <Scan className="h-5 w-5 text-primary" />
                 AI Food Quality Checker
@@ -138,8 +138,8 @@ const AIFoodChecker = () => {
           
           <CardContent className="space-y-4">
             {!selectedImage ? (
-              <div className="text-center space-y-4">
-                <div className="border-2 border-dashed border-border rounded-lg p-8">
+              <div className="bg-grey-300 text-center space-y-4">
+                <div className="bg-grey-300 border-2 border-dashed border-border rounded-lg p-8">
                   <Camera className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
                   <p className="text-muted-foreground mb-4">
                     Upload a photo of your food to check its freshness
@@ -201,8 +201,8 @@ const AIFoodChecker = () => {
                     <div className="text-center">
                       <div className={`inline-flex items-center gap-2 p-3 rounded-lg ${
                         analysisResult.isFresh 
-                          ? 'bg-green-50 text-green-700 dark:bg-green-950 dark:text-green-300' 
-                          : 'bg-red-50 text-red-700 dark:bg-red-950 dark:text-red-300'
+                          ? 'bg-grey-300 text-green-700 dark:bg-green-950 dark:text-green-300' 
+                          : 'bg-grey-300 text-red-700 dark:bg-red-950 dark:text-red-300'
                       }`}>
                         {analysisResult.isFresh ? (
                           <CheckCircle className="h-5 w-5" />
