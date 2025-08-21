@@ -1,27 +1,61 @@
-import { useState } from 'react';
-import { MapPin, Clock, Camera, Send } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { useState } from "react";
+import { MapPin, Clock, Camera, Send } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+
+import { uploadFile } from "@/firebaseStorage";
+import { addFoodPost } from "@/firebaseDB";
 
 const PostFood = () => {
   const [formData, setFormData] = useState({
-    foodType: '',
-    quantity: '',
-    description: '',
-    address: '',
-    pickupTime: '',
-    contactInfo: '',
-    images: null as FileList | null
+    foodType: "",
+    quantity: "",
+    description: "",
+    address: "",
+    pickupTime: "",
+    contactInfo: "",
+    images: null as FileList | null,
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // This would connect to backend when Supabase is integrated
-    console.log('Food posting data:', formData);
+    setIsSubmitting(true);
+
+    try {
+      // Upload images to Firebase Storage
+      const imageUrls: string[] = [];
+      if (formData.images) {
+        for (let i = 0; i < formData.images.length; i++) {
+          const url = await uploadFile(formData.images[i], "foodImages");
+          imageUrls.push(url);
+        }
+      }
+
+      // Save post to Firestore
+      await addFoodPost({ ...formData, images: imageUrls });
+
+      alert("Food posted successfully!");
+      setFormData({
+        foodType: "",
+        quantity: "",
+        description: "",
+        address: "",
+        pickupTime: "",
+        contactInfo: "",
+        images: null,
+      });
+    } catch (error) {
+      console.error(error);
+      alert("Failed to post food. Try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -32,8 +66,7 @@ const PostFood = () => {
             <span className="text-foreground">Share Your Surplus Food</span>
           </h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Help reduce food waste by connecting your surplus food with local NGOs 
-            and charities that can distribute it to those in need.
+            Help reduce food waste by connecting your surplus food with local NGOs and charities that can distribute it to those in need.
           </p>
         </div>
 
@@ -45,17 +78,15 @@ const PostFood = () => {
               </div>
               <span>Post Food Details</span>
             </CardTitle>
-            <CardDescription>
-              Provide information about the food you'd like to share
-            </CardDescription>
+            <CardDescription>Provide information about the food you'd like to share</CardDescription>
           </CardHeader>
-          
+
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="grid md:grid-cols-2 gap-6">
                 <div className="space-y-2">
                   <Label htmlFor="foodType">Food Type</Label>
-                  <Select onValueChange={(value) => setFormData({...formData, foodType: value})}>
+                  <Select onValueChange={(value) => setFormData({ ...formData, foodType: value })}>
                     <SelectTrigger>
                       <SelectValue placeholder="Select food category" />
                     </SelectTrigger>
@@ -76,7 +107,7 @@ const PostFood = () => {
                     id="quantity"
                     placeholder="e.g., 20 portions, 5kg, 10 boxes"
                     value={formData.quantity}
-                    onChange={(e) => setFormData({...formData, quantity: e.target.value})}
+                    onChange={(e) => setFormData({ ...formData, quantity: e.target.value })}
                   />
                 </div>
               </div>
@@ -88,7 +119,7 @@ const PostFood = () => {
                   placeholder="Describe the food, ingredients, preparation method, expiry details..."
                   className="min-h-[100px]"
                   value={formData.description}
-                  onChange={(e) => setFormData({...formData, description: e.target.value})}
+                  onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                 />
               </div>
 
@@ -102,7 +133,7 @@ const PostFood = () => {
                     id="address"
                     placeholder="Enter pickup location"
                     value={formData.address}
-                    onChange={(e) => setFormData({...formData, address: e.target.value})}
+                    onChange={(e) => setFormData({ ...formData, address: e.target.value })}
                   />
                 </div>
 
@@ -115,7 +146,7 @@ const PostFood = () => {
                     id="pickupTime"
                     type="datetime-local"
                     value={formData.pickupTime}
-                    onChange={(e) => setFormData({...formData, pickupTime: e.target.value})}
+                    onChange={(e) => setFormData({ ...formData, pickupTime: e.target.value })}
                   />
                 </div>
               </div>
@@ -126,7 +157,7 @@ const PostFood = () => {
                   id="contactInfo"
                   placeholder="Phone number or email"
                   value={formData.contactInfo}
-                  onChange={(e) => setFormData({...formData, contactInfo: e.target.value})}
+                  onChange={(e) => setFormData({ ...formData, contactInfo: e.target.value })}
                 />
               </div>
 
@@ -141,13 +172,13 @@ const PostFood = () => {
                   multiple
                   accept="image/*"
                   className="file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-medium file:bg-primary file:text-primary-foreground hover:file:bg-primary/90"
-                  onChange={(e) => setFormData({...formData, images: e.target.files})}
+                  onChange={(e) => setFormData({ ...formData, images: e.target.files })}
                 />
               </div>
 
-              <Button type="submit" variant="hero" size="lg" className="bg-yellow-100 w-half">
+              <Button type="submit" variant="hero" size="lg" disabled={isSubmitting} className="w-full">
                 <Send className="mr-2 h-5 w-5" />
-                Post Food for Sharing
+                {isSubmitting ? "Posting..." : "Post Food for Sharing"}
               </Button>
             </form>
           </CardContent>
