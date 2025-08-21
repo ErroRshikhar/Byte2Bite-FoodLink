@@ -1,16 +1,16 @@
 import { ArrowRight, Users, Utensils } from 'lucide-react';
-import { Button } from '@/components/ui/button'; // Update the path to your actual image file
+import { Button } from '@/components/ui/button';
 
 const Hero = () => {
   return (
     <section id="home" className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Background Image with Overlay */}
       <div className="absolute inset-0 z-0">
-        <img 
-          alt="Community food sharing - hands connecting surplus food with those in need"
+        <div
           className="w-full h-full object-cover"
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-background/90 via-background/60 to-background/80" />
+        {/* Overlay with 50% opacity */}
+        <div className="absolute inset-0 bg-background/50" />
       </div>
 
       {/* Content */}
@@ -18,8 +18,10 @@ const Hero = () => {
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           <div className="text-center lg:text-left animate-fade-in">
             <h1 className="text-4xl md:text-6xl font-bold leading-tight mb-6">
-              <span className="text-foreground">Connecting Surplus Food with Hungry Mouths</span>
-              <span className="bg-gradient-hero bg-clip-text text-transparent">Surplus Food</span>
+              <span className="text-foreground">Connecting </span>
+              <span className="bg-gradient-hero bg-clip-text text-foreground">Surplus Food</span>
+              <span className="text-foreground"> with </span>
+              <span className="bg-gradient-warm bg-clip-text text-foreground">Hungry Mouths</span>
             </h1>
             
             <p className="text-lg md:text-xl text-muted-foreground mb-8 max-w-2xl">
