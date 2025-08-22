@@ -56,6 +56,16 @@ Impact:
 
 >Strengthens NGO–community relations.
 
+Revenue/Bussiness model:
+>Registration fees-
+          NGOs - Free
+          Party Oranisers - Rs200/year
+          Hostel mess managers - Rs200/year
+>Transaction fees-
+          Each successfull match - Rs50 (charged on completion)
+>Value Added Services-
+          on-site packing - Rs200/event (on request; staffed by platform)
+          food safety advice - Rs100/consult (remote/phone; breif food handeling tips)
 Teach Stack:
 Languages used-
 1. typescript
